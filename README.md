@@ -56,7 +56,7 @@ O sistema possui as seguintes funcionalidades:
 
 **Windows, OS X & Linux:**
 
-Assumindo que tenha o docker instalado, aws cli instalado e configurado e o awslocal instalado.
+Assumindo que tenha o *docker* instalado, *aws cli* instalado e configurado e o *awslocal* instalado.
 
 Baixe o arquivo zip e o descompacte ou baixe o projeto para sua máquina através do git clone [https://github.com/randercarlos/laravel-localstack](https://github.com/randercarlos/laravel-localstack)
 
@@ -94,7 +94,7 @@ docker-compose exec localstack-app php artisan migrate
 
     <img src="email.png" alt="Configuração de email" />
 
-- Use as configurações mostradas pelo mailtrap e use para configurar as seguintes variáveis de ambiente:
+- Use as configurações mostradas pelo mailtrap e use para configurar as seguintes variáveis de ambiente no arquivo **.env**:
 
 ```sh
 MAIL_MAILER=
@@ -104,7 +104,14 @@ MAIL_USERNAME=
 MAIL_PASSWORD=
 ```
 
-- Após isso, rode o comando para rodar a fila:
+- Após isso, execute o script **.sh** que cria o bucket S3, a fila no SQS e configura o email no AWS SES:
+
+```sh
+chmod +x bootstrap.sh
+./bootstrap.sh
+```
+
+- Em seguida, execute o comando para rodar a fila:
 
 ```sh
 docker-compose exec localstack-app php artisan queue:work
