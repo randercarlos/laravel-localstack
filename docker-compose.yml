@@ -1,0 +1,72 @@
+version: '3'
+
+services:
+    localstack:
+        image: localstack/localstack
+        ports:
+            - "127.0.0.1:4566:4566"            # LocalStack Gateway
+            - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+        environment:
+            AWS_DEFAULT_REGION: us-east-1
+            AWS_ACCESS_KEY_ID: test
+            AWS_SECRET_ACCESS_KEY: test
+            DEBUG: 1
+            LS_LOG: WARN
+            HOSTNAME: localstack
+            HOSTNAME_EXTERNAL: localstack
+            SERVICES: ec2,dax,lambda,apigateway,dynamodb,dynamodbstreams,s3,sns,iam,kinesis,dynamodb,ses
+            DOCKER_HOST: unix:///var/run/docker
+            LAMBDA_EXECUTOR: docker-reuse
+            LAMBDA_DOCKER_NETWORK: "localstack-network"
+        volumes:
+            - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+            - "/var/run/docker.sock:/var/run/docker.sock"
+        networks:
+            - localstack-network
+
+    localstack-app:
+        build:
+            context: .
+            dockerfile: ___docker/Dockerfile
+        container_name: localstack-app
+        restart: unless-stopped
+        volumes:
+            - .:/var/www
+            - /var/www/vendor
+        depends_on:
+            - localstack-web
+            - localstack
+        networks:
+            - localstack-network
+
+    localstack-web:
+        image: nginx:1.24.0
+        container_name: localstack-web
+        restart: unless-stopped
+        ports:
+            - "8000:80"
+        volumes:
+            - .:/var/www
+            - ./___docker/nginx:/etc/nginx/conf.d
+        networks:
+            - localstack-network
+
+    localstack-db:
+        image: mariadb:10.4
+        container_name: localstack-db
+        volumes:
+            - ./___docker/mariadb:/var/lib/mysql
+        ports:
+            - 3307:3306
+        environment:
+            MARIADB_ROOT_PASSWORD: 96430409
+            MARIADB_DATABASE: ${DB_DATABASE}
+            MARIADB_USER: ${DB_USERNAME}
+            MARIADB_PASSWORD: ${DB_PASSWORD}
+        networks:
+            - localstack-network
+
+
+networks:
+    localstack-network:
+        driver: bridge
