@@ -6,14 +6,12 @@ use App\Http\Requests\DeleteUploadFileRequest;
 use App\Jobs\DeleteUploadFileFromS3;
 use App\Jobs\UploadFileToS3;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class UploadController extends Controller
 {
@@ -54,7 +52,6 @@ class UploadController extends Controller
 
     public function upload(Request $request)
     {
-        session()->start();
         try {
             $uploadedFilePath = $this->uploadFile($request->file('file'));
             UploadFileToS3::dispatch($uploadedFilePath);

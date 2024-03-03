@@ -29,7 +29,9 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - [Localstack](https://docs.localstack.cloud/overview/)
 - [Docker](https://docker.com)
 - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
-- [AWSlocal](https://github.com/localstack/awscli-local)
+- [Python 3](https://www.python.org/downloads/)
+- [Pip 3](https://packaging.python.org/en/latest/tutorials/installing-packages/)
+- [AWSLocal](https://github.com/localstack/awscli-local)
 
 
 ## 💻 Projeto
@@ -55,6 +57,7 @@ O sistema possui as seguintes funcionalidades:
 ## ⚙️ Instalação e execução
 
 **Windows, OS X & Linux:**
+Obs: todos os comandos abaixo são para linux. Se você usa Windows ou Mac, adapte os comandos para o SO usado.
 
 Assumindo que tenha o *docker* instalado, *aws cli* instalado e configurado e o *awslocal* instalado.
 
@@ -69,8 +72,15 @@ cd ir-ate-a-pasta-do-projeto
 - Crie o arquivo .env a partir do arquivo .env.example. As variáveis de ambiente relacionadas ao banco já estão configuradas.
 
 ```sh
-copy .env.example .env
+cp .env.example .env
 ```
+
+- Para garantir que não ocorrerá erros de permissão ou de conexão ao banco, execute os comandos abaixo:
+
+```sh
+sudo rm -rf ___docker/mariadb/
+chmod -R 777 bootstrap storage
+``` 
 
 - Assumindo que tenha o docker instalado na máquina, para subir os containeres, execute o comando:
 
@@ -78,13 +88,7 @@ copy .env.example .env
 docker-compose up -d
 ```
 
-- Após isso, execute o comando abaixo para instalar as dependências do laravel.
-
-```sh
-docker-compose exec localstack-app composer install
-``` 
-
-- Depois de instalar as dependencias, crie as tabelas rodando o comando abaixo:
+- Depois, crie as tabelas rodando o comando abaixo:
 
 ```sh
 docker-compose exec localstack-app php artisan migrate
@@ -102,6 +106,13 @@ MAIL_HOST=
 MAIL_PORT=
 MAIL_USERNAME=
 MAIL_PASSWORD=
+```
+
+- Após isso, execute o script **.sh** que instala o aws cli, python 3, pip3 e awslocal:
+
+```sh
+chmod +x install-requirements.sh
+./install-requirements.sh
 ```
 
 - Após isso, execute o script **.sh** que cria o bucket S3, a fila no SQS e configura o email no AWS SES:

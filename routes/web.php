@@ -21,4 +21,3 @@ Route::get('/', function () {
 Route::get('form', [UploadController::class, 'form'])->name('form');
 Route::post('upload', [UploadController::class, 'upload'])->name('upload');
 Route::get('upload/{encryptedFilename}/delete', [UploadController::class, 'deleteUpload'])->name('deleteUpload');
-Route::get('upload/completed', [UploadController::class, 'jobCompleted'])->name('jobCompleted');
