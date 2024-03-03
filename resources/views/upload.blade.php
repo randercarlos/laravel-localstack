@@ -89,9 +89,6 @@
 <script src="{{ asset('js/vendors.min.js') }}"></script>
 <script src="{{ asset('js/algaworks.min.js') }}"></script>
 <script>
-    var uploadForm = document.getElementById('uploadForm');
-    uploadForm.addEventListener('submit', executeSSE());
-
     document.addEventListener('DOMContentLoaded', function() {
         // Get the upload button element
         var uploadBtn = document.querySelector('.upload-btn');
@@ -111,25 +108,6 @@
             document.getElementById('uploadForm').submit();
         });
     });
-
-    function executeSSE() {
-        const statusDiv = document.getElementById('alert-success');
-        const eventSource = new EventSource('/upload/completed');
-
-        eventSource.onmessage = function(event) {
-            const eventData = JSON.parse(event.data);
-            console.log('SSE DATA', eventData);
-            // statusDiv.innerText = eventData.message;
-            statusDiv.style.display = 'block';
-            eventSource.close(); // Close the SSE connection after receiving the message
-        };
-
-        eventSource.onerror = function(error) {
-            console.error('EventSource failed:', error);
-            eventSource.close();
-        };
-    }
-
 </script>
 </body>
 </html>
