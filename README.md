@@ -2,7 +2,7 @@
   🚀 Projeto de Integração do Laravel com Localstack
 </h4>
 
-<img src="print.png" alt="Tela principal do sistema" />
+<img src="diagrama.png" alt="Diagrama do sistema" />
 
 <p align="center">
     <img src="https://img.shields.io/static/v1?label=PRs&message=welcome&color=7159c1&labelColor=000000" alt="PRs welcome!" />
@@ -91,7 +91,7 @@ docker-compose up -d
 - Depois, crie as tabelas rodando o comando abaixo:
 
 ```sh
-docker-compose exec localstack-app php artisan migrate
+docker-compose exec localstack-app php artisan migrate --seed
 ``` 
 
 - Após rodar o comando acima, será necessário configurar as variáveis de ambiente para envio de email. Recomendo o uso do mailtrap conforme imagem abaixo:
