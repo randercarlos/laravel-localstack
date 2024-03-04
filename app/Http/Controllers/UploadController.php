@@ -15,22 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UploadController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(Request $request)
-    {
-        try {
-            $uploadedFilePath = $this->uploadFile($request->file('file'));
-            UploadFileToS3::dispatch($uploadedFilePath);
-
-            return response()->json(['message' => 'Image upload job dispatched.'], Response::HTTP_ACCEPTED);
-        } catch(\Exception $e) {
-            Log::error($e->getMessage());
-            return response()->json(['message' => 'Fail on dispatch image upload job.'], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
     private function uploadFile(UploadedFile $uploadedFile): string {
         return $uploadedFile->store('uploads', 'local');
     }
