@@ -112,14 +112,14 @@ MAIL_PASSWORD=
 
 ```sh
 chmod +x install-requirements.sh
-./install-requirements.sh
+sudo ./install-requirements.sh
 ```
 
 - Após isso, execute o script **.sh** que cria o bucket S3, a fila no SQS e configura o email no AWS SES:
 
 ```sh
 chmod +x bootstrap.sh
-./bootstrap.sh
+sudo ./bootstrap.sh
 ```
 
 - Em seguida, execute o comando para rodar a fila:
