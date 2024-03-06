@@ -57,7 +57,7 @@ class UploadController extends Controller
             DeleteUploadFileFromS3::dispatch($uploadedFilePath);
 
             Log::info("Delete upload job dispatched: $uploadedFilePath");
-            session()->flash('success', 'Delete upload job dispatched.');
+            session()->flash('info', 'Delete upload job dispatched.');
         } catch(\Exception $e) {
             Log::error($e->getMessage());
             session()->flash('error', 'Fail on dispatch delete upload job.');
